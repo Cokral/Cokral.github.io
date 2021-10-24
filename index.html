@@ -1,98 +1,87 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en-us">
   <head>
-    <title>Thomas Coquereau</title>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <link rel="icon" href="source/website_icon.png">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | T&D The Game</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
   </head>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="HandheldFriendly" content="true">
-
   <body>
-
-    <div class="title">
-      <h1 class="title-h1">Thomas Coquereau</h1>
-      <h2 class="title-h2">Data Scientist</h2>
-
-      <p class="title-icons">
-        <i><a href="https://github.com/Cokral"><span class="fab fa-github"></span></a></i>
-        <i><a href="https://www.linkedin.com/in/thomas-coquereau/"><span class="fab fa-linkedin"></span></a></i>
-        <i><a href="mailto:coquereau.thomas@gmail.com"><span class="far fa-envelope"></span></a></i>
-      </p>
-    </div>
-
-
-    <div class="container">
-
-      <div class="timeline-item" date-is='January 2019 - Now'>
-        <h1><a href="https://www.smartway.ai"><img src="source/zg_logo.png" height="30rem" /></a> Data Scientist</h1>
-        <div class="wrapper-columns">
-          <div class="left-column div1">
-			<p>Data Scientist in a team of 2.</p>
-			<p>Worked towards deploying the first ML model of the company in production.</p>
-			<p>Projects : Dynamic Pricing, Optimizing switching (between selling and donations), recognizing the type of product through its label (NLP).</p>
-			<p>Handled business enquiries through : Dashboards, SQL queries.</p>
-            <p>Deployed data pipelines.</p>
-          </div>
-          <div class="right-column div2">
-			<p></p>
-			<p><br>Python, sklearn, Mlflow, Dagster, AWS.</p>
-			<p><br>Python, sklearn, heuristics.</p>
-			<p><br><br>Metabase, AWS Quicksight, postgresql, AWS Athena, AWS S3.</p>
-            <p>Dagster.</p>
-          </div>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=600></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
         </div>
       </div>
-
-      <div class="timeline-item" date-is='May 2018 - September 2018'>
-        <h1><a href="https://oui.sncf/"><img src="source/oui_sncf_logo.png" height="30rem" /></a> Data Scientist intern</h1>
-        <div class="wrapper-columns">
-          <div class="left-column div1">
-			<p>Data Scientist in a team of developers.</p>
-			<p>Worked towards deploying the first ML model of the team in production.</p>
-			<p>Project : Classifying web end-to-end tests.</p>
-          </div>
-          <div class="right-column div2">
-			<p></p>
-			<p><br>Python, Flask.</p>
-			<p><br>Python, sklearn.</p>
-          </div>
-		</div>
+      <div id="unity-mobile-warning">
+        WebGL builds are not supported on mobile devices.
       </div>
-
-      <div class="timeline-item" date-is='2018'>
-        <h1><a href="https://wayne.edu/"><img src="source/wsu_logo.jpg" height="30rem"></img></a> Year abroad</h1>
-        <div class="wrapper-columns">
-			<div class="left-column div1">
-				<p>8 months at Wayne State University (Detroit, MI, USA).</p>
-				<p>AI classes.</p>
-				<p>Game design & programming classes.</p>
-			</div>
-			<div class="right-column div2">
-				<p></p>
-				<p><br>Machine Learning, AI 1 & 2. Participated in a kaggle contest.</p>
-				<p>Game Programming and Design 1 & 2. Developed a 3D survival game.</p>
-			</div>
-		</div>
+      <div id="unity-footer">
+        <div id="unity-webgl-logo"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">T&D The Game</div>
       </div>
-
-      <div class="timeline-item" date-is='2013 - 2018'>
-        <h1><a href="https://polytech.univ-nantes.fr/"><img src="source/polytech_logo.jpg" height="30rem"></img></a> Bs and Ms</h1>
-        	<div class="wrapper-columns">
-				<div class="left-column div1">
-				<p>BS of Math & Physics. Ms of Computer Science specialized in Business Intelligence.</p>
-				<p>Engineering School of Polytech Nantes (Nantes, France).</p>
-			</div>
-			<div class="right-column div2">
-			</div>
-			</div>
-		</div>
-      </div>
-
     </div>
+    <script>
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/ThomasAndDevonTheGame.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/ThomasAndDevonTheGame.data.gz",
+        frameworkUrl: buildUrl + "/ThomasAndDevonTheGame.framework.js.gz",
+        codeUrl: buildUrl + "/ThomasAndDevonTheGame.wasm.gz",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "com.ThomasCoquereau",
+        productName: "T&D The Game",
+        productVersion: "1.0",
+      };
 
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var mobileWarning = document.querySelector("#unity-mobile-warning");
+
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        // Avoid draining fillrate performance on mobile devices,
+        // and default/override low DPI mode on mobile browsers.
+        config.devicePixelRatio = 1;
+        mobileWarning.style.display = "block";
+        setTimeout(() => {
+          mobileWarning.style.display = "none";
+        }, 5000);
+      } else {
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
   </body>
+</html>
